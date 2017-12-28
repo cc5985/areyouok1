@@ -5,9 +5,28 @@ import universal
 
 from HttpMD5Util import buildMySign,httpGet,httpPost
 
-class OKEx:
+class SpotAPI:
 
-    __market="OKEx"
+    __market=""
+    base_url=""
+    __market_base_url_pair={
+        "OKEx":'www.okex.com',
+        "huobi":"www.huobi.pro",
+        "zb":"www.zb.com",
+        "bitfinex":"www.bitfinex.com",
+        "coinbase":"www.gdax.com",
+        "gdax":"www.gdax.com",
+        "bitmex":"www.bitmex.com",
+        "bitstamp":"www.bitstamp.com",
+        "btcbox":"www.btcbox.co.jp",
+        "bitflyer":"bitflyer.jp",
+        "coincheck":"coincheck.com",
+        "bithumb":"www.bithumb.com"
+    }
+
+    def set_market(self, market="OKEx"):
+        self.__market=market
+        self.base_url=self.__market_base_url_pair.get([market],default="www.okex.com")
 
     def __init__(self,account, base_url = 'www.okex.com'):
         "account represents a key pair, base_url represents the prefix of the restFUL resources"
@@ -24,17 +43,15 @@ class OKEx:
         return result
 
     # 获取OKCOIN现货市场深度信息
-    def depth(self, currency_pair='btc_usdt', raw=True):
+    def depth(self, currency_pair='btc_usdt'):
         DEPTH_RESOURCE = "/api/v1/depth.do"
         params = ''
         if currency_pair:
             params = 'symbol=%(symbol)s' % {'symbol': currency_pair}
         result=httpGet(self.base_url, DEPTH_RESOURCE, params)
-        if raw==False:
-            return result
-        else:
-            result=universal.Depth(self.__market,currency_pair,result)
-            return result
+        print(result)
+        result=universal.Depth(self.__market,currency_pair,result)
+        return result
 
     # 获取OKCOIN现货历史交易信息
     def trades(self, currency_pair=''):

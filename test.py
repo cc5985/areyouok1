@@ -10,11 +10,21 @@ from OkcoinFutureAPI import OKCoinFuture
 import account
 import currency_pair
 import okex
+import mysql_API
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 market="OKEx"
 account=account.Account("test")
 okex1=okex.OKEx(account)
 currency_pair_of_bch_usdt=currency_pair.CurrencyPair('bch','usdt').get_currency_pair()
+
+
+
+def determine_table_name():
+    localtime=time.localtime()
+    table_name="depth_OKEx_" + str( localtime[1]).rjust(2,"0") + str(localtime[2]).rjust(2,"0")
+    return table_name
+
 
 # 初始化apikey，secretkey,url
 # print(account.api_key,account.secret_key,account.name)
@@ -147,3 +157,51 @@ import universal
 # test for batch_trade
 # result=okex1.batch_trade(currency_pair_of_bch_usdt,"buy","[{price:10001.1,amount:0.01,type:'sell'},{price:10002.2,amount:0.01,type:'sell'}]")
 # print(result)
+
+
+import time
+import json
+
+t1=time.time()
+# for vnt in range(1,11):
+#     t2=time.time()
+#     depth=okex1.depth(currency_pair_of_bch_usdt,False)
+#     t3=time.time()
+#     depth=json.dumps(depth)
+#     sql_string="insert into test4 values(null," + str(int(t3)) +",'" +currency_pair_of_bch_usdt + "','"+ str(depth) +"')"
+#     mysql_manager.insert_data(sql_string)
+#     t4=time.time()
+#     print("get takes: %s \tinsertion takes: %s" % (str(t3-t2), str(t4-t3)))
+#
+
+
+def job_func():
+    try:
+        mysql_manager=mysql_API.MySQLManager("root","caichong","test")
+        depth=okex1.depth(currency_pair_of_bch_usdt,False)
+        depth=json.dumps(depth)
+        table_name=determine_table_name()
+        t=int(time.time())
+        print(str(int(t)))
+        sql_string="insert into " + table_name + " values(null," + str(t) +",'" +currency_pair_of_bch_usdt + "','"+ str(depth) +"')"
+        mysql_manager.insert_data(sql_string)
+        mysql_manager.close()
+    except Exception as e:
+        print(e)
+        print(depth)
+        print(sql_string)
+
+
+sched=BlockingScheduler()
+sched.add_job(job_func,  'interval', max_instances=10,seconds=1)
+sched.start()
+
+t5=time.time()
+print()
+print()
+print(t5-t1)
+
+
+
+
+

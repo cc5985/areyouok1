@@ -133,3 +133,80 @@ class OKEx:
         }
         params['sign'] = buildMySign(params,self.account.secret_key)
         return httpPost(self.base_url,BATCH_TRADE_RESOURCE,params)
+
+    def trade_history(self, currency_pair, since):
+        TRADE_HISTORY_RESOURCE="/api/v1/trade_history.do"
+        params={
+            'api_key': self.account.api_key,
+            'symbol': currency_pair,
+            'since': since,
+        }
+        params['sign'] = buildMySign(params,self.account.secret_key)
+        return httpPost(self.base_url, TRADE_HISTORY_RESOURCE, params)
+
+    def get_all_currencies(self):
+        import json
+        USERINFO_RESOURCE = "/api/v1/userinfo.do"
+        params = {}
+        params['api_key'] = self.account.api_key
+        params['sign'] = buildMySign(params, self.account.secret_key)
+        result=json.loads(httpPost(self.base_url, USERINFO_RESOURCE, params))
+        result=result["info"]["funds"]["free"]
+        result=dict(result).keys()
+        currencies=[]
+        for item in result:
+            currencies.append(item)
+        return currencies
+
+    def get_all_currency_pairs(self):
+        import currency_pair
+        currencies=self.get_all_currencies()
+        references=currency_pair.CurrencyPair().get_referencial_currencies("okex")
+        currency_pairs=[]
+        for reference in references:
+            for currency in currencies:
+                if str(currency).lower()!=str(reference).lower():
+                    currency_pairs.append(str(currency)+"_"+str(reference))
+        return currency_pairs
+
+
+    def get_currency_pair_order(self, top_n=10, ordered_by="trading volume"):
+        '''
+        this method returns a list of currency pairs ordered by trading volume
+        :param top_n: how many currency pairs you want to list
+        :param ordered_by: either of 'trading volume', 'market cap', 'price', etc.
+        :return: a list of currency pairs ordered by trading volume
+        '''
+        # get all the currency pairs:
+        import currency_pair as cp
+        all_currency_pairs=self.get_all_currency_pairs()
+
+
+        # get the ratio of ref1 to usdt
+        cp1=cp.CurrencyPair()
+        referencial_currencies=cp1.get_referencial_currencies("okex")
+        prices_of_referencial_currencies={}
+        for currency in referencial_currencies:
+            if currency!="usdt":
+                ticker=self.ticker(currency+"_usdt")
+                price=ticker.last
+                prices_of_referencial_currencies[ticker.currency_pair]=price
+
+
+        tickers=[]
+        turn_volumes={}
+
+        for currency_pair in all_currency_pairs:
+            referencial_currency=cp1.get_referencial_currency(str(currency_pair))
+            if referencial_currency!="usdt":
+                ticker=self.ticker(currency_pair)
+                if ticker.message=="True":
+                    turn_volume=(ticker.high+ticker.low)*ticker.vol*prices_of_referencial_currencies[referencial_currency+"_usdt"]/2
+                    turn_volumes[ticker.currency_pair]=turn_volume
+        turn_volumes=sorted(turn_volumes.items(), key=lambda x:x[1], reverse=True)
+        return turn_volumes[:top_n-1]
+
+
+
+
+

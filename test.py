@@ -175,31 +175,44 @@ t1=time.time()
 #
 
 
-def job_func():
-    try:
-        mysql_manager=mysql_API.MySQLManager("root","caichong","test")
-        depth=okex1.depth(currency_pair_of_bch_usdt,False)
-        depth=json.dumps(depth)
-        table_name=determine_table_name()
-        t=int(time.time())
-        print(str(int(t)))
-        sql_string="insert into " + table_name + " values(null," + str(t) +",'" +currency_pair_of_bch_usdt + "','"+ str(depth) +"')"
-        mysql_manager.insert_data(sql_string)
-        mysql_manager.close()
-    except Exception as e:
-        print(e)
-        print(depth)
-        print(sql_string)
+# def job_func():
+#     try:
+#         mysql_manager=mysql_API.MySQLManager("root","caichong","test")
+#         depth=okex1.depth(currency_pair_of_bch_usdt,False)
+#         depth=json.dumps(depth)
+#         table_name=determine_table_name()
+#         t=int(time.time())
+#         print(str(int(t)))
+#         sql_string="insert into " + table_name + " values(null," + str(t) +",'" +currency_pair_of_bch_usdt + "','"+ str(depth) +"')"
+#         mysql_manager.insert_data(sql_string)
+#         mysql_manager.close()
+#     except Exception as e:
+#         print(e)
+#         print(depth)
+#         print(sql_string)
+#
+#
+# sched=BlockingScheduler()
+# sched.add_job(job_func,  'interval', max_instances=10,seconds=1)
+# sched.start()
+#
+# t5=time.time()
+# print()
+# print()
+# print(t5-t1)
 
 
-sched=BlockingScheduler()
-sched.add_job(job_func,  'interval', max_instances=10,seconds=1)
-sched.start()
+# https://www.okcoin.cn/api/v1/trade_history.do
+# test for get_trades function:
+# result=okex1.trade_history(currency_pair_of_bch_usdt,1)
+# print(result)
 
-t5=time.time()
-print()
-print()
-print(t5-t1)
+
+# test for get_currency_pair_order
+result=okex1.get_currency_pair_order(20)
+for item in result:
+    print(item[0] + ":\t" + str(item[1])+ "\t" + "usd" )
+
 
 
 

@@ -159,15 +159,22 @@ class Ticker(object):
             self.currency_pair=currency_pair
             if dict(result).__contains__("ticker"):
                 ticker=result["ticker"]
-                self.buy=ticker["buy"]
-                self.sell=ticker["sell"]
-                self.vol=ticker["vol"]
-                self.high=ticker["high"]
-                self.low=ticker["low"]
-                self.last=ticker["last"]
-                self.timestamp=result["date"]
+                self.buy=float(ticker["buy"])
+                self.sell=float(ticker["sell"])
+                self.vol=float(ticker["vol"])
+                self.high=float(ticker["high"])
+                self.low=float(ticker["low"])
+                self.last=float(ticker["last"])
+                self.timestamp=int(result["date"])
                 self.message="True"
             elif dict(result).__contains__("error_code"):
+                self.buy=0
+                self.sell=0
+                self.vol=0
+                self.high=0
+                self.low=0
+                self.last=0
+                self.timestamp=0
                 error_key=result["error_code"]
                 self.message=error_code.Error_code_for_OKEx[error_key]
         except Exception as e:

@@ -41,7 +41,7 @@ def create_tables(currency_name, reference_name):
         days=_DAYS_IN_MONTH[month]
     # print(str(month) + ": " + str(days))
     for day in range(1,days+1):
-        table_name= "depth_OKEx_" + currency_name + "_" + reference_name + str(month).rjust(2,"0") + str(day).rjust(2,"0")
+        table_name= "depth_OKEx_" + currency_name + "_" + reference_name + "_" + str(month).rjust(2,"0") + str(day).rjust(2,"0")
         print(table_name)
         mysql_manager.create_table(table_name,string)
 

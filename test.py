@@ -209,10 +209,10 @@ t1=time.time()
 
 
 # test for get_currency_pair_order
-result=okex1.get_currency_pair_order(20)
-for item in result:
-    print(item[0] + ":\t" + str(item[1])+ "\t" + "usd" )
-
+# result=okex1.get_currency_pair_order(20)
+# for item in result:
+#     print(item[0] + ":\t" + str(item[1])+ "\t" + "usd" )
+#
 
 
 

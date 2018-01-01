@@ -36,21 +36,21 @@ mysql_manager=mysql_API.MySQLManager("root","caichong","okex")
 # table structure of Depth table:
 
 # create tables in database: okex
-def create_tables(currency_name, reference_name):
-    for month in range(1,13):
-        days=_DAYS_IN_MONTH[month]
-    # print(str(month) + ": " + str(days))
-    for day in range(1,days+1):
-        table_name= "depth_OKEx_" + currency_name + "_" + reference_name + "_" + str(month).rjust(2,"0") + str(day).rjust(2,"0")
-        print(table_name)
-        mysql_manager.create_table(table_name,string)
-
 _DAYS_IN_MONTH = [-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 string=""
 string="id int not null AUTO_INCREMENT, timestamp int, currency_pair varchar(15), data json,  PRIMARY KEY (id)"
 print(string)
 currencies=["bch","eth","itc","ltc","etc"]
 references=["btc"]
+
+def create_tables(currency_name, reference_name):
+    for month in range(1,13):
+        days=_DAYS_IN_MONTH[month]
+    # print(str(month) + ": " + str(days))
+        for day in range(1,days+1):
+            table_name= "depth_OKEx_" + currency_name + "_" + reference_name + "_" + str(month).rjust(2,"0") + str(day).rjust(2,"0")
+            print(table_name)
+            mysql_manager.create_table(table_name,string)
 
 for currency in currencies:
     for ref in references:

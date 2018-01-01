@@ -64,7 +64,7 @@ def job_func():
         print(depth)
         print(sql_string)
 
-job_func()
-# sched=BlockingScheduler()
-# sched.add_job(job_func,  'interval', max_instances=10,seconds=1)
-# sched.start()
+
+sched=BlockingScheduler()
+sched.add_job(job_func,  'interval', max_instances=20,seconds=1)
+sched.start()

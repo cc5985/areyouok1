@@ -18,7 +18,7 @@ currency_pair_of_bch_usdt=currency_pair.CurrencyPair('bch','usdt').get_currency_
 
 # initialize the currency pairs:
 currency_pairs=[]
-currencies=["bch","eth","itc","ltc","etc"]
+currencies=["bch","eth","itc"]
 references=["btc"]
 for item1 in currencies:
     for item2 in references:
@@ -50,6 +50,7 @@ t1=time.time()
 
 def job_func():
     try:
+        t=0
         mysql_manager=mysql_API.MySQLManager("root","caichong","okex")
         for currency_pair in currency_pairs:
             depth=okex1.depth(currency_pair,False)
@@ -58,6 +59,7 @@ def job_func():
             t=int(time.time())
             sql_string="insert into " + table_name + " values(null," + str(t) +",'" +currency_pair + "','"+ str(depth) +"')"
             mysql_manager.insert_data(sql_string)
+        print(t)
         mysql_manager.close()
     except Exception as e:
         print(e)

@@ -84,8 +84,8 @@ while True:
     depth=okex1.depth(currency_pair)
     ask0=depth.asks[0].price
     bid0=depth.bids[0].price
-    my_ask,my_bid=depth.get_supporting_points('vol',1)
-
+    my_bid,my_ask=depth.get_supporting_points('vol',0.2)
+    print(my_bid,my_ask)
 
 
 

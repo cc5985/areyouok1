@@ -12,12 +12,15 @@ import currency_pair
 import okex
 import mysql_API
 from apscheduler.schedulers.blocking import BlockingScheduler
+import time
+import json
+import universal
 
 market="OKEx"
 account=account.Account("test")
 okex1=okex.OKEx(account)
 currency_pair_of_bch_usdt=currency_pair.CurrencyPair('bch','usdt').get_currency_pair()
-
+currency_pair='bch_btc'
 
 
 def determine_table_name():
@@ -127,8 +130,9 @@ import universal
 ----------------------------------------------------------------------------
 '''
 
+'''
 # test for universal module2:
-import universal
+----------------------------------------------------------------------------
 
 # test for balances function:
 # balances=okex1.balances()
@@ -157,12 +161,17 @@ import universal
 # test for batch_trade
 # result=okex1.batch_trade(currency_pair_of_bch_usdt,"buy","[{price:10001.1,amount:0.01,type:'sell'},{price:10002.2,amount:0.01,type:'sell'}]")
 # print(result)
+----------------------------------------------------------------------------
+'''
 
 
-import time
-import json
 
-t1=time.time()
+
+'''
+# test for data insertion
+----------------------------------------------------------------------------
+
+# t1=time.time()
 # for vnt in range(1,11):
 #     t2=time.time()
 #     depth=okex1.depth(currency_pair_of_bch_usdt,False)
@@ -200,21 +209,49 @@ t1=time.time()
 # print()
 # print()
 # print(t5-t1)
+----------------------------------------------------------------------------
+'''
 
 
+'''
+test for trade_history function, and failed!!!!!!!!!!!!!!!!!
+----------------------------------------------------------------------------
 # https://www.okcoin.cn/api/v1/trade_history.do
 # test for get_trades function:
 # result=okex1.trade_history(currency_pair_of_bch_usdt,1)
 # print(result)
-
-
-# test for get_currency_pair_order
-# result=okex1.get_currency_pair_order(20)
-# for item in result:
-#     print(item[0] + ":\t" + str(item[1])+ "\t" + "usd" )
-#
+'''
 
 
 
 
+# ----------------------------------------------------------------------------
+# asset assessment:
+# test for get_equivalent function:
+last=0
+def job_func():
+    global last
+    equivalent_asset=account.get_rough_equivalent_asset('usdt')
+    print(str(equivalent_asset )+ '\tusdt\t' + str(equivalent_asset-last))
+    last=equivalent_asset
 
+sched=BlockingScheduler()
+sched.add_job(job_func,  'interval', max_instances=10,seconds=5)
+sched.start()
+# ----------------------------------------------------------------------------
+
+# test for get_currency_pair_order:
+# a=okex1.get_currency_pair_order(20)
+# for item in a:
+#     print("pair:\t %s\t%f" % (item[0],item[1]))
+
+# test for determine_best_currency_pairs
+# a=okex1.determine_best_currency_pairs()
+# print(a)
+
+
+
+depth=okex1.depth(currency_pair)
+depth.get_supporting_points('vol',10)
+my_bid,my_ask=depth.get_supporting_points('vol',1)
+print(my_bid,my_ask)

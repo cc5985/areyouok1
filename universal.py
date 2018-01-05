@@ -1,3 +1,4 @@
+# encoding=utf-8
 # this project is powered by Jeff Omega
 # as author is a newbie to python, code style of this project is rubyish
 # as a convention, class name is capitalized and instance is lower-cased
@@ -10,19 +11,58 @@ import json
 import error
 import time
 
+class OrderInfo:
+    def __init__(self, currency_pair, result, params):
+        try:
+            result=json.loads(result)
+            self.order_id=""
+            if result["result"]==True:
+                self.order_id=result["order_id"]
+                self.price=params["price"]
+                self.amount=params["amount"]
+                self.type=params["type"]
+                self.message="操作成功"
+            else:
+                self.message=error_code.Error_code_for_OKEx[result["error_code"]]
+        except:
+            self.order_ids=[]
+            self.message="Unknow error"
+
 #  this class represents the orders that you HAVE already submitted,
 # NOT the orders you are submitting!!!
+class SubmittedOrderList:
+    def __init__(self,currency_pair,result):
+        result=json.loads(result)
+        if result.__contains__("result") and result["result"]==True:
+            if result.__contains__("total"):
+                self.orders=[]
+                self.total=result["total"]
+                orders=result["orders"]
+                for order in orders:
+                    currency_pair=order["symbol"]
+                    id=int(order["order_id"])
+                    price=float(order["price"])
+                    total_amount=float(order["amount"])
+                    trade_amount=float(order["deal_amount"])
+                    status=int(order["status"])
+                    trade_price=float(order["avg_price"])
+                    trade_money=trade_amount*trade_price
+                    trade_type=(1 if order["type"]=="buy" else 0)
+                    this_order=SubmittedOrder(currency_pair,id,price,status,total_amount,trade_amount,trade_money,trade_price,trade_type)
+                    self.orders.append(this_order)
+                    self.message="操作成功"
+        else:
+            self.message=error_code.Error_code_for_OKEx[result["error_code"]]
 
 class SubmittedOrder:
     def __init__(self, currency_pair, id, price, status, total_amount,
-                 trade_amount, trade_date, trade_money, trade_price, trade_type):
+                 trade_amount,  trade_money, trade_price, trade_type):
         self.currency_pair=currency_pair
         self.id=id
         self.price=price
         self.status=status
         self.total_amount =total_amount
         self.trade_amount=trade_amount
-        self.trade_date=trade_date
         self.trade_money=trade_money
         self.trade_price=trade_price
         self.trade_type=trade_type
@@ -128,12 +168,39 @@ class Depth(object):
         else:
             pass
 
-    def mid_point(self, weighted_by=None, distance=1):
+    def get_supporting_points(self, weighted_by=None, distance=1):
+        supporting_points=[0,0]
         if weighted_by==None:
-            bid_price=self.bids[distance-1].price
-            ask_price=self.asks[distance-1].price
-            return (bid_price+ask_price)/2.0
+            ask0=self.asks[0].price
+            bid0=self.bids[0].price
+            my_ask=999
+            my_bid=0
 
+            if ask0-bid0<=0.00000002:
+                my_ask=ask0
+                my_bid=bid0
+            else:
+                my_ask=ask0-0.00000001
+                my_bid=bid0+0.00000001
+            return [my_bid,my_ask]
+        elif weighted_by=="vol":
+            acc_bid_vol=0
+            acc_ask_vol=0
+            cnt=0
+            bid_price=self.bids[-1].price  # in case can not find a proper point, set this price to a very distant price in the 1st place
+            ask_price=self.asks[-1].price
+            for bid in self.bids:
+                acc_bid_vol+=bid.amount
+                if acc_bid_vol>=distance:
+                    bid_price=bid.price
+                    break
+            for ask in self.asks:
+                acc_ask_vol+=ask.amount
+                if acc_ask_vol>=distance:
+                    ask_price=ask.price
+                    break
+            supporting_points=[bid_price,ask_price]
+            return supporting_points
     '''
     here distance means accumulated amount, e.g:
     bid0: 0.1
@@ -147,7 +214,12 @@ class Depth(object):
     but when you think about it, you dont really need this function,
     because before long, you would use tensorflow as the backend to
     calculate and deduce the pattern, then this strategy is useless!
+    
+    but anyway, you have to use this function before you implement this into tensorflow...............
     '''
+
+
+
 
 class Ticker(object):
     # :market, :currency, :timestamp, :high,
@@ -166,7 +238,7 @@ class Ticker(object):
                 self.low=float(ticker["low"])
                 self.last=float(ticker["last"])
                 self.timestamp=int(result["date"])
-                self.message="True"
+                self.message="操作成功"
             elif dict(result).__contains__("error_code"):
                 self.buy=0
                 self.sell=0
@@ -223,7 +295,7 @@ class Trades:
                         trade_type=0
                     trade=TradeInfo(item["date"],item["price"],item["amount"],trade_type,item["tid"],status)
                     self.trades.append(trade)
-                self.message="True"
+                self.message="操作成功"
         except Exception as e:
             self.message=e
 
@@ -257,7 +329,7 @@ class BalanceInfo:
             if market=="okex":
                 result=json.loads(result)
                 if result["result"]==True:
-                    self.message="True"
+                    self.message="操作成功"
                     self.free=result["info"]["funds"]["free"]
                     self.free.pop("bcc")
                     self.frozen=result["info"]["funds"]["freezed"]

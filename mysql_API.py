@@ -6,14 +6,14 @@ import pymysql
 
 class MySQLManager:
 
-    def __init__(self,user_name="root", password="", schema=None):
+    def __init__(self,user_name="root", password="", schema=None, target_server_ip="localhost", port=3306):
 
         try:
             self.db_name=schema
-            self.db=pymysql.connect("localhost",user_name,password,schema)
-            self.db.connect_timeout=1000
+            self.db=pymysql.connect(target_server_ip,user_name,password,schema,port=port)
+            self.db.connect_timeout=10000
         except Exception as e:
-            return e
+            print(e)
 
     def reconnect(self, user_name, password, schema):
         self.db.close()
@@ -69,8 +69,14 @@ class MySQLManager:
             return False
 
 
-    def execute(self):
-        pass
+    def execute(self, sql_string):
+        cursor=self.db.cursor()
+        try:
+            cursor.execute(sql_string)
+            return cursor.fetchall()
+        except Exception as e:
+            print("Error: " + str(e))
+            return False
 
     def len_of_table(self, table_name, unit="MB"):
         try:
@@ -93,13 +99,11 @@ class MySQLManager:
 
 
 
-    @classmethod
-    def len_of_schema(cls, schema_name, unit="MB"):
+
+    def len_of_schema(self, schema_name, unit="MB"):
         try:
-            db_name="sys"
-            db=pymysql.connect("localhost","root","caichong",db_name)
             sql_string="SELECT sum(DATA_LENGTH)+sum(INDEX_LENGTH) FROM information_schema.TABLES where TABLE_SCHEMA='" + schema_name  + "'; "
-            cursor=db.cursor()
+            cursor=self.db.cursor()
             cursor.execute(sql_string)
             b=cursor.fetchall()[0][0]
             if unit.lower()=="byte":

@@ -17,7 +17,7 @@ account=AC.Account("test")
 okex1= okex.OKEx(account)
 currency_pair_of_bch_usdt= currency_pair.CurrencyPair('bch', 'usdt').get_currency_pair()
 currency_pair='bch_btc'
-
+color=CL.Colored()
 
 # assume we have c0 c1 c2, each of which has a quantity q0 q1 q2
 # we should re-buy c0,c1,c2 in different market/pair at possible low price:
@@ -109,9 +109,9 @@ def trade(ref_coin, target_coin, price, amount, trade_type):
     _currency_pair = target_coin + '_' +ref_coin
     result = okex1.submit_order(trade_type, _currency_pair, price, amount)
     if result.message=="操作成功":
-        print(str(result.type) + '\t' + str(result.price) + '\t' + str(result.amount))
+        print(color.green(trade_type + ' ' + target_coin + ' at ' + str(price) + ' of ' + str(amount)))
     else:
-        print(result.message)
+        print(color.red(trade_type + ' ' + target_coin + ' at ' + str(price) + ' of ' + str(amount)))
     return result
 
 def show_time():
@@ -132,7 +132,7 @@ def show_time():
     for pair in pairs:
         depth=okex1.depth(pair)
         depths.append(depth)
-    color=CL.Colored()
+
     # coin0_in_pairs0_we_can_buy=get_the_quantity_of_coin_you_can_buy(depths[0],coin0.name,coin1)
     # coin0_in_pairs2_we_can_buy=get_the_quantity_of_coin_you_can_buy(depths[2],coin0.name,coin2)
     # coin1_in_pairs0_we_can_buy=get_the_quantity_of_coin_you_can_buy(depths[0],coin1.name,coin0)

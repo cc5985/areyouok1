@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="184357f1-618d-4614-929b-989eed110457" name="Default" comment="" />
+    <list default="true" id="184357f1-618d-4614-929b-989eed110457" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/robot2.py" afterPath="$PROJECT_DIR$/robot2.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,13 +37,14 @@
       <file leaf-file-name="robot2.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/robot2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="166" column="32" lean-forward="false" selection-start-line="166" selection-start-column="28" selection-end-line="166" selection-end-column="32" />
+            <state relative-caret-position="49">
+              <caret line="172" column="45" lean-forward="true" selection-start-line="172" selection-start-column="45" selection-end-line="172" selection-end-column="45" />
               <folding>
                 <element signature="e#38#49#0" expanded="true" />
-                <element signature="e#1083#2490#0" expanded="false" />
-                <element signature="e#2564#3678#0" expanded="false" />
-                <element signature="e#2564#2657#1" expanded="false" />
+                <element signature="e#1101#2508#0" expanded="false" />
+                <element signature="e#2582#2675#1" expanded="false" />
+                <element signature="e#4555#4607#0" expanded="false" />
+                <element signature="e#4613#4706#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -50,8 +53,8 @@
       <file leaf-file-name="okex.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/OKEx/okex.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="56" column="0" lean-forward="true" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+            <state relative-caret-position="351">
+              <caret line="34" column="31" lean-forward="true" selection-start-line="34" selection-start-column="31" selection-end-line="34" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="false" />
                 <element signature="e#280#428#0" expanded="false" />
@@ -92,6 +95,16 @@
                 <element signature="e#12722#12962#0" expanded="false" />
                 <element signature="e#13320#13902#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="universal.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/packages/universal.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="89" column="26" lean-forward="false" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="26" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -203,8 +216,8 @@
         <option value="$PROJECT_DIR$/packages/account.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/robot3.py" />
-        <option value="$PROJECT_DIR$/robot2.py" />
         <option value="$PROJECT_DIR$/packages/universal.py" />
+        <option value="$PROJECT_DIR$/robot2.py" />
       </list>
     </option>
   </component>
@@ -426,11 +439,11 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13155022" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34731182" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34731182" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32580644" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -480,18 +493,28 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/robot2.py</url>
-          <line>186</line>
-          <option name="timeStamp" value="176" />
+          <line>202</line>
+          <option name="timeStamp" value="188" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/robot2.py</url>
+          <line>173</line>
+          <option name="timeStamp" value="189" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/robot2.py</url>
           <line>165</line>
-          <option name="timeStamp" value="178" />
+          <option name="timeStamp" value="190" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/robot2.py</url>
-          <line>117</line>
-          <option name="timeStamp" value="179" />
+          <line>168</line>
+          <option name="timeStamp" value="191" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/robot2.py</url>
+          <line>194</line>
+          <option name="timeStamp" value="192" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -501,7 +524,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="188" />
+      <option name="time" value="193" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -851,18 +874,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/packages/universal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="23" column="17" lean-forward="true" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OKEx/okex.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="56" column="0" lean-forward="true" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+        <state relative-caret-position="351">
+          <caret line="34" column="31" lean-forward="true" selection-start-line="34" selection-start-column="31" selection-end-line="34" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#280#428#0" expanded="false" />
@@ -906,15 +921,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/packages/universal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="89" column="26" lean-forward="false" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/robot2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="166" column="32" lean-forward="false" selection-start-line="166" selection-start-column="28" selection-end-line="166" selection-end-column="32" />
+        <state relative-caret-position="49">
+          <caret line="172" column="45" lean-forward="true" selection-start-line="172" selection-start-column="45" selection-end-line="172" selection-end-column="45" />
           <folding>
             <element signature="e#38#49#0" expanded="true" />
-            <element signature="e#1083#2490#0" expanded="false" />
-            <element signature="e#2564#3678#0" expanded="false" />
-            <element signature="e#2564#2657#1" expanded="false" />
+            <element signature="e#1101#2508#0" expanded="false" />
+            <element signature="e#2582#2675#1" expanded="false" />
+            <element signature="e#4555#4607#0" expanded="false" />
+            <element signature="e#4613#4706#0" expanded="false" />
           </folding>
         </state>
       </provider>

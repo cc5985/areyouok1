@@ -112,10 +112,10 @@ def trade(ref_coin, target_coin, price, amount, trade_type):
         print(color.green(trade_type + ' ' + target_coin + ' at ' + str(price) + ' of ' + str(amount)))
     else:
         print(color.red(trade_type + ' ' + target_coin + ' at ' + str(price) + ' of ' + str(amount)))
+        print(result.message)
     return result
 
 def show_time():
-    trade('usdt','eth',19999,0.003,'buy')
 
     coins=[]
     coin0=CN.Coin('btc',1,0.1)
@@ -163,13 +163,13 @@ def show_time():
     profit.append((ETH-coin22)/coin22*100)
     if (ETH-coin22)/coin22>0:
         # use BTC to buy ETH in market0, returns the amount coin00 of btc
-        t0=threading.Thread(target=trade,args=('btc','eth',9999,ETH,'buy'))
+        t0=threading.Thread(target=trade,args=('btc','eth',depths[0].bids[0].price*1.5,ETH,'buy'))
         # trade('btc','eth',9999,ETH,'buy')
         # use usdt to buy btc in market2, returns the amount coin11 of usdt
-        t1=threading.Thread(target=trade,args=('usdt','btc',19999,coin00,'buy'))
+        t1=threading.Thread(target=trade,args=('usdt','btc',depths[2].bids[0].price*1.5,coin00,'buy'))
         # trade('usdt','btc',99999,coin00,'buy')
         # sell eth for usdt in market1, returns the amount coin22 of
-        t2=threading.Thread(target=trade,args=('usdt','eth',0.1,coin11,'sell'))
+        t2=threading.Thread(target=trade,args=('usdt','eth',depths[1].bids[0].price*0.7,ETH,'sell'))
         # trade('usdt','eth',0,coin11,'sell')
         t1.start()
         t2.start()
@@ -186,13 +186,13 @@ def show_time():
     profit.append((BTC-coin22)/coin22*100)
     if (BTC-coin22)/coin22>0:
         # use BTC to buy ETH in market0, returns the amount coin00 of btc
-        t0=threading.Thread(target=trade,args=('btc','eth',0.001,ETH,'sell'))
+        t0=threading.Thread(target=trade,args=('btc','eth',depths[0].bids[0].price*0.7,ETH,'sell'))
         # trade('btc','eth',9999,ETH,'buy')
         # use usdt to buy btc in market2, returns the amount coin11 of usdt
-        t1=threading.Thread(target=trade,args=('usdt','eth',19999,coin00,'buy'))
+        t1=threading.Thread(target=trade,args=('usdt','eth',depths[1].bids[0].price*1.5,coin00,'buy'))
         # trade('usdt','btc',99999,coin00,'buy')
         # sell eth for usdt in market1, returns the amount coin22 of
-        t2=threading.Thread(target=trade,args=('usdt','btc',0.1,coin11,'sell'))
+        t2=threading.Thread(target=trade,args=('usdt','btc',depths[2].bids[0].price*0.7,BTC,'sell'))
         # trade('usdt','eth',0,coin11,'sell')
         t1.start()
         t2.start()

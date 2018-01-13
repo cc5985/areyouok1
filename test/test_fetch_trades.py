@@ -1,18 +1,17 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import mysql_API
-import account
-import okex
+from net import mysql_API
+from packages import account
+from OKEx import okex
 import time
-import json
 
-mysql_manager=mysql_API.MySQLManager("root","caichong","okex")
+mysql_manager= mysql_API.MySQLManager("root", "caichong", "okex")
 currencies=["bch","eth","itc"]
 references=["btc"]
 market="OKEx"
-account=account.Account("test")
-okex1=okex.OKEx(account)
+account= account.Account("test")
+okex1= okex.OKEx(account)
 currency_pair=currencies[0]+'_'+references[0]
 
 # fetch trades data from okex.server using trade_history method:

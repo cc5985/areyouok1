@@ -1,10 +1,7 @@
 # coding=utf-8
 
-import mysqlAPI
-import okex
-import account
-import json
-import universal
+from OKEx import okex
+from packages import account
 import time
 
 # test 1, plot a 2-dimension array
@@ -147,8 +144,8 @@ currency_pair='bch_btc'
 previous_bid=0
 previous_ask=999
 
-account=account.Account("test")
-okex1=okex.OKEx(account)
+account= account.Account("test")
+okex1= okex.OKEx(account)
 my_info=okex1.balances()
 ask_order=None
 bid_order=None

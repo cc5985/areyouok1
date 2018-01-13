@@ -1,9 +1,9 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import mysql_API
+from net import mysql_API
 
-mysql_manager=mysql_API.MySQLManager("root","caichong","okex")
+mysql_manager= mysql_API.MySQLManager("root", "caichong", "okex")
 
 '''
 basic funtion test for mysql_API

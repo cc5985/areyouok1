@@ -5,29 +5,25 @@ account: represents account
 
 
 # coding=utf-8
-from OkcoinSpotAPI import OKCoinSpot
-from OkcoinFutureAPI import OKCoinFuture
-import account
-import currency_pair
-import okex
-import mysql_API
+from packages import account as AC, currency_pair
+from OKEx import okex
 from apscheduler.schedulers.blocking import BlockingScheduler
 import time
-import json
-import universal
+
+# CONSTANTS:
+FEE0=-0.001
+FEE1= 0.002
 
 market="OKEx"
-account=account.Account("test")
-okex1=okex.OKEx(account)
-currency_pair_of_bch_usdt=currency_pair.CurrencyPair('bch','usdt').get_currency_pair()
+account=AC.Account("c008")
+okex1= okex.OKEx(account)
+currency_pair_of_bch_usdt= currency_pair.CurrencyPair('bch', 'usdt').get_currency_pair()
 currency_pair='bch_btc'
-
 
 def determine_table_name():
     localtime=time.localtime()
     table_name="depth_OKEx_" + str( localtime[1]).rjust(2,"0") + str(localtime[2]).rjust(2,"0")
     return table_name
-
 
 # 初始化apikey，secretkey,url
 # print(account.api_key,account.secret_key,account.name)
@@ -36,7 +32,6 @@ def determine_table_name():
 # currency_pair1=currency_pair1.get_currency_pair()
 #
 # print(currency_pair1)
-
 
 '''
 the following are http.get test
@@ -164,9 +159,6 @@ import universal
 ----------------------------------------------------------------------------
 '''
 
-
-
-
 '''
 # test for data insertion
 ----------------------------------------------------------------------------
@@ -222,36 +214,132 @@ test for trade_history function, and failed!!!!!!!!!!!!!!!!!
 # print(result)
 '''
 
-
-
-
 # ----------------------------------------------------------------------------
 # asset assessment:
 # test for get_equivalent function:
-last=0
-def job_func():
-    global last
-    equivalent_asset=account.get_rough_equivalent_asset('usdt')
-    print(str(equivalent_asset )+ '\tusdt\t' + str(equivalent_asset-last))
-    last=equivalent_asset
-
-sched=BlockingScheduler()
-sched.add_job(job_func,  'interval', max_instances=10,seconds=5)
-sched.start()
+# REFERENCE="usdt"
+#
+# accounts=[]
+# accounts.append(AC.Account('c008'))
+# accounts.append(AC.Account('test'))
+# last=[0,0]
+# def job_func():
+#     global last
+#     print(time.localtime())
+#     for account in accounts:
+#         equivalent_asset=account.get_rough_equivalent_asset(REFERENCE)
+#         print(account.name + '\t' + str(equivalent_asset )+ '\t' + REFERENCE + '\t' )
+#
+# sched=BlockingScheduler()
+# sched.add_job(job_func,  'interval', max_instances=10,seconds=2)
+# sched.start()
 # ----------------------------------------------------------------------------
 
 # test for get_currency_pair_order:
-# a=okex1.get_currency_pair_order(20)
-# for item in a:
-#     print("pair:\t %s\t%f" % (item[0],item[1]))
+top_50_currency_pairs_in_trading_vol=okex1.get_currency_pair_order(50)
+# sort the list group by referencial currency:
+bch_pairs=[]
+usdt_pairs=[]
+btc_pairs=[]
+eth_pairs=[]
+import packages.currency_pair as CP
+cp1=CP.CurrencyPair()
+for item in top_50_currency_pairs_in_trading_vol:
+    referencial_currency=cp1.get_referencial_currency(item[0])
+    if referencial_currency=='btc':
+        btc_pairs.append(item)
+    elif referencial_currency=='bch':
+        bch_pairs.append(item)
+    elif referencial_currency=='eth':
+        eth_pairs.append(item)
+    elif referencial_currency=='usdt':
+        usdt_pairs.append(item)
+for item in bch_pairs:
+    print(item[0],'\t',item[1])
+print()
+for item in btc_pairs:
+    print(item[0],'\t',item[1])
+print()
+for item in eth_pairs:
+    print(item[0],'\t',item[1])
+print()
+for item in usdt_pairs:
+    print(item[0],'\t',item[1])
+
+
 
 # test for determine_best_currency_pairs
 # a=okex1.determine_best_currency_pairs()
 # print(a)
 
+# test for kline function:
+#
+# import math2
+# def print_klines_andshit(currency_pair):
+#     klines=okex1.k_line(currency_pair)
+#     vols=[]
+#     strs=[]
+#     for kline in klines.klines:
+#         vols.append(float(kline.vol))
+#         strs.append(kline.vol)
+#     str=','.join(strs)
+#     std=math2.std(vols)
+#     mean=math2.mean(vols)
+#     std_to_mean=math2.std_to_mean(vols)
+#     print('currency_pair: %(currency_pair)s' % {'currency_pair':currency_pair})
+#     print('std:\t%(std)f' % {'std':std})
+#     print('mean:\t%(mean)f' % {'mean':mean})
+#     print('std_to_mean:\t%(std_to_mean)f' % {'std_to_mean':std_to_mean})
+#
+# currency_pairs=['ltc_bch',
+#                 'etc_bch',
+#                 'eth_btc',
+#                 'bcc_btc',
+#                 'bch_btc',
+#                 'ltc_btc',
+#                 'etc_btc',
+#                 'read_btc',
+#                 'eos_btc',
+#                 'qtum_btc',
+#                 'itc_btc',
+#                 'swftc_btc',
+#                 'icx_btc',
+#                 'xrp_btc',
+#                 'trx_btc',
+#                 'act_btc',
+#                 'kcash_btc',
+#                 'elf_btc',
+#                 'iota_btc',
+#                 'bcx_btc',
+#                 'neo_btc',
+#                 'hsr_btc',
+#                 'ssc_btc',
+#                 'knc_btc',
+#                 'omg_btc',
+#                 'snt_btc',
+#                 'mana_btc',
+#                 'amm_btc',
+#                 'dat_btc',
+#                 'btm_btc',
+#                 'btc_usdt',
+#                 'eth_usdt',
+#                 'bch_usdt',
+#                 'bcc_usdt',
+#                 'ltc_usdt',
+#                 'dpy_usdt',
+#                 'etc_usdt',
+#                 'swftc_usdt',
+#                 'xrp_usdt',
+#                 'qtum_usdt',
+#                 'eos_usdt',
+#                 'kcash_usdt',
+#                 'btm_usdt',
+#                 'act_usdt',
+#                 'iota_usdt',
+#                 'hsr_usdt']
+#
+# for currency_pair in currency_pairs:
+#     print_klines_andshit(currency_pair)
+#     print()
 
-
-depth=okex1.depth(currency_pair)
-depth.get_supporting_points('vol',10)
-my_bid,my_ask=depth.get_supporting_points('vol',1)
-print(my_bid,my_ask)
+account.set_position()

@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 import csv
-import universal
-import okex
+from packages import universal
+from OKEx import okex
+
 
 def get_key_pair(discription="test"):
     f=open('API_list.csv','r')
@@ -22,8 +23,8 @@ class Account:
         self.name=key_pair[2]
 
     def set_balance(self, balance_info=None):
-        if balance_info.__class__!=universal.BalanceInfo:
-            okex1=okex.OKEx(self)
+        if balance_info.__class__!= universal.BalanceInfo:
+            okex1= okex.OKEx(self)
             balance_info=okex1.balances()
         self.balance_info=balance_info  # universal.BalanceInfo class
 
@@ -42,15 +43,41 @@ class Account:
             total_asset[coin]+=float(frozen[coin])
         try:
             for coin in total_asset:
-                okex1=okex.OKEx(self)
+                okex1= okex.OKEx(self)
                 if total_asset[coin]!=0:
                     if coin==reference:
                         ratio=1
                     else:
                         ratio=(okex1.ticker(coin + '_' + reference)).last
                         if ratio==0:
-                            ratio=(okex1.ticker(reference + '_' + coin)).last
+                            ratio=1/(okex1.ticker(reference + '_' + coin)).last
                     equivalent_asset+=total_asset[coin]*ratio
         except:
             pass
+        self.equivalent_asset=equivalent_asset
         return equivalent_asset
+
+    def change_coins(self):
+        pass
+
+    def set_position(self, positions={"btc":0.5,"ltc":0.5}):
+        '''
+
+        :param positions:
+        :return:
+        '''
+        key1,key2=positions.keys()
+        holdings={}
+        self.positions=positions
+        return
+        self.set_balance()
+        for coin_name in self.balance_info.free:
+            if coin_name==key1:
+                holdings[key1]=self.balance_info.free[coin_name]
+            if coin_name==key2:
+                holdings[key2]=self.balance_info.free[coin_name]
+        for coin_name in self.balance_info.frozen:
+            if coin_name==key1:
+                holdings[key1]+=self.balance_info.frozen[coin_name]
+            if coin_name==key2:
+                holdings[key2]+=self.balance_info.frozen[coin_name]

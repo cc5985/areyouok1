@@ -1,10 +1,8 @@
 # it's highly suggested to use ENGLISH only in this project
 # encoding=utf-8
-import account
-import universal
-import json
+from packages import universal
 import time
-from HttpMD5Util import buildMySign,httpGet,httpPost
+from OKEx.HttpMD5Util import buildMySign,httpGet,httpPost
 
 class OKEx:
 
@@ -21,7 +19,7 @@ class OKEx:
         params = ''
         if currency_pair:
             params = 'symbol=%(symbol)s' % {'symbol': currency_pair}
-        result=universal.Ticker(self.__market,currency_pair, httpGet(self.base_url, TICKER_RESOURCE, params))
+        result= universal.Ticker(self.__market, currency_pair, httpGet(self.base_url, TICKER_RESOURCE, params))
         return result
 
     # 获取OKCOIN现货市场深度信息
@@ -34,7 +32,7 @@ class OKEx:
         if raw==False:
             return result
         else:
-            result=universal.Depth(self.__market,currency_pair,result)
+            result= universal.Depth(self.__market, currency_pair, result)
             return result
 
     # 获取OKCOIN现货历史交易信息
@@ -44,7 +42,7 @@ class OKEx:
         if currency_pair:
             params = 'symbol=%(symbol)s' % {'symbol': currency_pair}
         result=httpGet(self.base_url, TRADES_RESOURCE, params)
-        result=universal.Trades(self.__market,currency_pair,result,2)
+        result= universal.Trades(self.__market, currency_pair, result, 2)
         return result
 
     # 获取用户现货账户信息
@@ -54,7 +52,7 @@ class OKEx:
         params['api_key'] = self.account.api_key
         params['sign'] = buildMySign(params, self.account.secret_key)
         result=httpPost(self.base_url, USERINFO_RESOURCE, params)
-        result=universal.BalanceInfo(self.__market,result)
+        result= universal.BalanceInfo(self.__market, result)
         return result
 
     # 现货交易
@@ -76,7 +74,7 @@ class OKEx:
         p=params.copy()
         params['sign'] = buildMySign(params, self.account.secret_key)
         result=httpPost(self.base_url, TRADE_RESOURCE, params)
-        result=universal.OrderInfo(currency_pair,result,p)
+        result= universal.OrderInfo(currency_pair, result, p)
         return result
 
     #现货取消订单
@@ -113,7 +111,7 @@ class OKEx:
         }
         params['sign'] = buildMySign(params, self.account.secret_key)
         result=httpPost(self.base_url, ORDER_HISTORY_RESOURCE, params)
-        result=universal.SubmittedOrderList(currency_pair,result)
+        result= universal.SubmittedOrderList(currency_pair, result)
         return result
 
     # trade_list这个方法是取得已成交订单的列表！
@@ -144,6 +142,16 @@ class OKEx:
         # result=universal.OrderInfo(currency_pair,result,{})
         return result
 
+    # 获取OKEx币币K线数据
+    def k_line(self, currency_pair, interval='1min', size=None):
+        KLINE_RESOURCE = "/api/v1/kline.do"
+        params = ''
+        if currency_pair:
+            params = 'symbol=%(symbol)s&type=%(interval)s' % {'symbol': currency_pair, 'interval': interval}
+        result=httpGet(self.base_url, KLINE_RESOURCE, params)
+        result= universal.Klines(self.__market, currency_pair, result)
+        return result
+
     def trade_history(self, currency_pair, since):
         TRADE_HISTORY_RESOURCE="/api/v1/trade_history.do"
         params={
@@ -169,9 +177,9 @@ class OKEx:
         return currencies
 
     def get_all_currency_pairs(self):
-        import currency_pair
+        from packages import currency_pair
         currencies=self.get_all_currencies()
-        references=currency_pair.CurrencyPair().get_referencial_currencies("okex")
+        references= currency_pair.CurrencyPair().get_referencial_currencies("okex")
         currency_pairs=[]
         for reference in references:
             for currency in currencies:
@@ -187,7 +195,7 @@ class OKEx:
         :return: a list of currency pairs ordered by trading volume
         '''
         # get all the currency pairs:
-        import currency_pair as cp
+        from packages import currency_pair as cp
         all_currency_pairs=self.get_all_currency_pairs()
 
         # get the ratio of ref1 to usdt
@@ -226,7 +234,6 @@ class OKEx:
         :return: a long value, repre tid
         '''
         # 0. initialize some vals:
-        import math
         import json
         import time
         cnt=0
@@ -289,7 +296,7 @@ class OKEx:
         :return:
         '''
         # get all currency pair trading vol of last 600 trades using ticker method:
-        import currency_pair as cp
+        from packages import currency_pair as cp
         all_currency_pairs=self.get_all_currency_pairs()
 
         # get the ratio of ref1 to usdt

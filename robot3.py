@@ -1,6 +1,6 @@
 # coding=utf-8
 
-# market making strategy
+# average sides order strategy
 
 from OKEx import okex
 from packages import account, currency_pair as CP
@@ -85,7 +85,7 @@ def main(arg):
 
     MUL_CONSTANT=1
     previous_bid=0
-    previous_ask=999
+    previous_ask=99999
 
 
     my_info=okex1.balances()

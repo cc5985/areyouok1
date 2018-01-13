@@ -1,26 +1,24 @@
-import mysql_API
-import ssh
-import account
-import okex
-import currency_pair
+from net import ssh, mysql_API
+from packages import account, currency_pair
+from OKEx import okex
 
 market="OKEx"
 currency_pairs=[]
-account=account.Account("test")
-okex1=okex.OKEx(account)
-currency_pair_of_bch_usdt=currency_pair.CurrencyPair('bch','usdt').get_currency_pair()
+account= account.Account("test")
+okex1= okex.OKEx(account)
+currency_pair_of_bch_usdt= currency_pair.CurrencyPair('bch', 'usdt').get_currency_pair()
 currencies=["bch","eth","itc"]
 references=["btc"]
-mysql_local_manager=mysql_API.MySQLManager("root","caichong","okex","localhost")
+mysql_local_manager= mysql_API.MySQLManager("root", "caichong", "okex", "localhost")
 date="0102"
 
 for item1 in currencies:
     for item2 in references:
         currency_pairs.append(item1 + "_" + item2)
 
-server1=ssh.SSHServer()
+server1= ssh.SSHServer()
 server1.start()
-mysql_manager=mysql_API.MySQLManager(user_name="root",password="caichong",schema="okex",target_server_ip="127.0.0.1", port=server1.server.local_bind_port)
+mysql_manager= mysql_API.MySQLManager(user_name="root", password="caichong", schema="okex", target_server_ip="127.0.0.1", port=server1.server.local_bind_port)
 length={}
 for currency_pair in currency_pairs:
     sql_string='select count(*) from depth_OKEx_' + currency_pair + '_' +date

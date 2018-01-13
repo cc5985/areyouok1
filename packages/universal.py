@@ -6,9 +6,8 @@
 # a btc38 gem from github
 
 
-import error_code
+from packages import error_code
 import json
-import error
 import time
 
 class OrderInfo:
@@ -23,7 +22,8 @@ class OrderInfo:
                 self.type=params["type"]
                 self.message="操作成功"
             else:
-                self.message=error_code.Error_code_for_OKEx[result["error_code"]]
+                self.message= error_code.Error_code_for_OKEx[result["error_code"]]
+                self.message=result["error_code"]
         except:
             self.order_ids=[]
             self.message="Unknow error"
@@ -52,7 +52,7 @@ class SubmittedOrderList:
                     self.orders.append(this_order)
                     self.message="操作成功"
         else:
-            self.message=error_code.Error_code_for_OKEx[result["error_code"]]
+            self.message= error_code.Error_code_for_OKEx[result["error_code"]]
 
 class SubmittedOrder:
     def __init__(self, currency_pair, id, price, status, total_amount,
@@ -81,7 +81,7 @@ class CancelOrderResult:
                 self.id=order_id
             else:
                 self.result=False
-                self.message=error_code.Error_code_for_OKEx[result["error_code"]]
+                self.message= error_code.Error_code_for_OKEx[result["error_code"]]
                 self.id=order_id
 
 class Order:
@@ -132,7 +132,7 @@ class Depth(object):
                         self.asks.append(ask)
                     self.asks.reverse()
                 elif dict(result).__contains__("error_code"):
-                    self.message=error_code.Error_code_for_OKEx[result["error_code"]]
+                    self.message= error_code.Error_code_for_OKEx[result["error_code"]]
             elif market=="chbtc":
                 pass
             elif market=="btc38":
@@ -168,20 +168,23 @@ class Depth(object):
         else:
             pass
 
-    def get_supporting_points(self, weighted_by=None, distance=1):
+    def get_supporting_points(self, weighted_by=None, distance=1, referencial_currency=''):
+        CONSTANT=1
+        if referencial_currency=='usdt':
+            CONSTANT=10000
         supporting_points=[0,0]
         if weighted_by==None:
             ask0=self.asks[0].price
             bid0=self.bids[0].price
-            my_ask=999
+            my_ask=99999
             my_bid=0
 
-            if ask0-bid0<=0.00000002:
+            if ask0-bid0<=0.00000002*CONSTANT:
                 my_ask=ask0
                 my_bid=bid0
             else:
-                my_ask=ask0-0.00000001
-                my_bid=bid0+0.00000001
+                my_ask=ask0-0.00000001*CONSTANT
+                my_bid=bid0+0.00000001*CONSTANT
             return [my_bid,my_ask]
         elif weighted_by=="vol":
             acc_bid_vol=0
@@ -218,7 +221,30 @@ class Depth(object):
     but anyway, you have to use this function before you implement this into tensorflow...............
     '''
 
+class Kline:
+    def __init__(self,o ,c , h, l, v, timestamp):
+        self.open=o
+        self.close=c
+        self.high=h
+        self.low=l
+        self.vol=v
+        self.timestamp=timestamp
 
+
+class Klines:
+    def __init__(self, market, currency_pair, result):
+        self.market=market
+        self.currency_pair=currency_pair
+        self.message='Unknow error'
+        self.klines=[]
+        try:
+            for item in result:
+                kline=Kline(timestamp=item[0],o=item[1],h=item[2],l=item[3],c=item[4],v=item[5])
+                self.klines.append(kline)
+            self.message='操作成功'
+        except:
+            error_key=result["error_code"]
+            self.message= error_code.Error_code_for_OKEx[error_key]
 
 
 class Ticker(object):
@@ -248,7 +274,7 @@ class Ticker(object):
                 self.last=0
                 self.timestamp=0
                 error_key=result["error_code"]
-                self.message=error_code.Error_code_for_OKEx[error_key]
+                self.message= error_code.Error_code_for_OKEx[error_key]
         except Exception as e:
             self.message=e
 
@@ -335,7 +361,7 @@ class BalanceInfo:
                     self.frozen=result["info"]["funds"]["freezed"]
                     self.frozen.pop("bcc")
                 else:
-                    self.message=error_code.Error_code_for_OKEx[dict(result)["error_code"]]
+                    self.message= error_code.Error_code_for_OKEx[dict(result)["error_code"]]
 
         except Exception as e:
             self.message=e

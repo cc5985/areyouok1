@@ -1,4 +1,3 @@
-import mysql_API
 from sshtunnel import SSHTunnelForwarder
 #
 # def UserMysql(db):

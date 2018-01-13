@@ -1,9 +1,8 @@
 # it's highly suggested to use ENGLISH only in this project
 
-import account
-import universal
+from packages import universal
 
-from HttpMD5Util import buildMySign,httpGet,httpPost
+from OKEx.HttpMD5Util import buildMySign,httpGet,httpPost
 
 class SpotAPI:
 
@@ -39,7 +38,7 @@ class SpotAPI:
         params = ''
         if currency_pair:
             params = 'symbol=%(symbol)s' % {'symbol': currency_pair}
-        result=universal.Ticker(self.__market,currency_pair, httpGet(self.base_url, TICKER_RESOURCE, params))
+        result= universal.Ticker(self.__market, currency_pair, httpGet(self.base_url, TICKER_RESOURCE, params))
         return result
 
     # 获取OKCOIN现货市场深度信息
@@ -50,7 +49,7 @@ class SpotAPI:
             params = 'symbol=%(symbol)s' % {'symbol': currency_pair}
         result=httpGet(self.base_url, DEPTH_RESOURCE, params)
         print(result)
-        result=universal.Depth(self.__market,currency_pair,result)
+        result= universal.Depth(self.__market, currency_pair, result)
         return result
 
     # 获取OKCOIN现货历史交易信息
@@ -68,7 +67,7 @@ class SpotAPI:
         params['api_key'] = self.account.api_key
         params['sign'] = buildMySign(params, self.account.secret_key)
         result=httpPost(self.base_url, USERINFO_RESOURCE, params)
-        result=universal.BalanceInfo(self.__market,result)
+        result= universal.BalanceInfo(self.__market, result)
         return result
 
     # 现货交易

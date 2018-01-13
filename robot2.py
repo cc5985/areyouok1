@@ -111,10 +111,12 @@ def trade(ref_coin, target_coin, price, amount, trade_type):
     if result.message=="操作成功":
         print(str(result.type) + '\t' + str(result.price) + '\t' + str(result.amount))
     else:
-        price(result.message)
+        print(result.message)
     return result
 
 def show_time():
+    trade('usdt','eth',19999,0.003,'buy')
+
     coins=[]
     coin0=CN.Coin('btc',1,0.1)
     coin1=CN.Coin('eth',1,1.6)

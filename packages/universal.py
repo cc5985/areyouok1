@@ -15,7 +15,7 @@ class OrderInfo:
         try:
             result=json.loads(result)
             self.order_id=""
-            if result["result"]==True:
+            if result.__contains__("result") and result["result"]==True:
                 self.order_id=result["order_id"]
                 self.price=params["price"]
                 self.amount=params["amount"]
